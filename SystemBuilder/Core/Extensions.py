@@ -27,6 +27,15 @@ class PluginWrapper():
                 self.plugin = attribute
                 break
 
+    def dataInitialize(self, *args, **kwargs):
+        return self.plugin.dataInitialize(*args, **kwargs)
+
+    def windowInitialize(self, *args, **kwargs):
+        return self.plugin.windowInitialize(*args, **kwargs)
+
+    def onexit(self, *args, **kwargs):
+        return self.plugin.onexit(*args, **kwargs)
+
 class PluginLoader:
 
     onProgress = Delegate(int, int)
@@ -55,6 +64,7 @@ class PluginLoader:
             step += 1
             if p:
                 PluginLoader.plugins.append(p)
+                p.dataInitialize()
 
     def discoverDependencies(directory):
         requirements = []
@@ -85,13 +95,6 @@ class PluginLoader:
     def getModules():
         return [module_name for (_, module_name, _) in ExtensionUtils.iter_modules_recursive([Paths.plugindir], relativeto=os.getcwd())]
 
-    def extractPlugins(modules : list):
-        plugins = []
-        for module_name in modules:
-            p = PluginLoader.extractPluginFromModule(module_name)
-            if p:
-                plugins.append(p)
-        return plugins
     
     def installDependency(pipname):
         logging.info(f'Installing {pipname}...')
