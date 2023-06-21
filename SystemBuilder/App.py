@@ -18,19 +18,11 @@ from SystemBuilder.Visual.Launcher import StartupLauncher
 
 # Initialize Logging
 
-def handle_exception(exc_type, exc_value, exc_traceback):
-    if issubclass(exc_type, KeyboardInterrupt):
-        sys.__excepthook__(exc_type, exc_value, exc_traceback)
-        return
-    else:
-        logging.getLogger().critical("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
-        exit(2)
-    
 root = logging.getLogger()
 root.handlers.clear()
 
 if getattr(sys, "frozen", False):
-    root.setLevel(logging.WARNING)
+    root.setLevel(logging.INFO)
 else:
     root.setLevel(logging.DEBUG)
 
@@ -49,10 +41,20 @@ ConsoleHandler.setLevel(logging.DEBUG)
 ConsoleHandler.setFormatter(logformat)
 root.addHandler(ConsoleHandler)
 builtins.print = logging.info
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    else:
+        msg = f"Uncaught Exception:\n{exc_traceback}"
+        logging.getLogger().critical(msg, exc_info=(exc_type, exc_value, exc_traceback))
+        exit(2)
+    
 sys.excepthook = handle_exception
 
-def run(args):
 
+def run(args):
     def openWindow():
         w.show()
         if SettingsLoader.maximized:
@@ -85,7 +87,13 @@ def run(args):
     #w = Window()
     #w.show()
 
+    # Verify another instance isn't open
+    shared_memory = QSharedMemory("SystemBuilder")
 
+    if shared_memory.create(1) is False:
+        # If the shared memory segment already exists, another instance is running
+        logging.critical("Another instance already open, abort")
+        sys.exit(0)
 
     launcher = StartupLauncher()
     w = Window()
