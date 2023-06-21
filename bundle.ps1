@@ -1,0 +1,1 @@
+pyinstaller --noconfirm --onedir --windowed --icon "Resources/Boxr.ico" --name "SysBuilder" --add-data "Resources;Resources/" --add-data "Plugins;Plugins/" --add-data "LICENSE;." --add-data "README.md;."  "main.py"
