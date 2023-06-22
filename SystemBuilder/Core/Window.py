@@ -7,6 +7,7 @@ import subprocess
 import typing
 from enum import Enum
 from types import NoneType
+from SystemBuilder.Core.Extensions import PluginLoader
 from SystemBuilder.Core.Settings import SettingsLoader
 from SystemBuilder.Core import API
 from SystemBuilder.Visual.Widgets.DetachableTabWidget import DetachableTabWidget
@@ -147,7 +148,6 @@ class Window(QMainWindow):
         self.bindAPI()
         logging.info('Window API Bound.')
         
-        #PluginLoader.signalWindowReady()
 
     def closeEvent(self, event) -> None:
 

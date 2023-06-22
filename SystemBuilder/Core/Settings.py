@@ -37,10 +37,10 @@ class SettingsLoader:
     # Halo Color
     HaloColor = ThemedColor(QColor(9, 12, 9, 255), QColor(255, 255, 255, 255))
 
-    CanvasColor = QColor(33, 33, 33, 255)
+    CanvasColor = ThemedColor(QColor(33, 33, 33, 255) , QColor(33, 33, 33, 255))
     GridColor = ThemedColor(QColor(211, 211, 211, 255) , QColor(47, 47, 47, 255))
 
-    SelectColor = QColor(255, 223, 100, 255)
+    SelectColor = ThemedColor(QColor(0, 0, 0, 255) , QColor(255, 223, 100, 255))
 
     def serializeSettings():
         attributes = inspect.getmembers(SettingsLoader, lambda a:not(inspect.isroutine(a)))

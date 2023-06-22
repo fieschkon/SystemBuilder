@@ -113,4 +113,5 @@ class PluginLoader:
 
     def signalWindowReady():
         for plugin in PluginLoader.plugins:
+            logging.info(f"Signaling window ready to {plugin.plugin.name}")
             plugin.plugin.windowInitialize()

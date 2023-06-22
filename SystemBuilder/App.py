@@ -11,6 +11,7 @@ import SystemBuilder
 
 from SystemBuilder.Core import Paths
 from SystemBuilder.Core import Settings
+from SystemBuilder.Core.Extensions import PluginLoader
 from SystemBuilder.Core.Settings import SettingsLoader
 from SystemBuilder.Core import Shared
 from SystemBuilder.Core.Window import Window
@@ -56,6 +57,7 @@ sys.excepthook = handle_exception
 
 def run(args):
     def openWindow():
+        PluginLoader.signalWindowReady()
         w.show()
         if SettingsLoader.maximized:
             w.setWindowState(Qt.WindowState.WindowMaximized)
